@@ -37,3 +37,43 @@ For each route, the automation retrieves:
 8. PAD extracts the first displayed flight's flight number, departure time, arrival time, and status.
 9. The results are written back to the corresponding row in Excel.
 10. The process repeats for the remaining routes.
+
+## Dynamic Date Handling
+
+The flight date is supplied by Excel rather than hard-coded into the automation.
+
+Power Automate Desktop separates the requested date into day, month, and year values and compares the requested month and year with the current date.
+
+The number of months that the calendar needs to move forward is calculated as:
+
+MonthsToMove = ((TargetYear - CurrentYear) * 12) + (TargetMonth - CurrentMonth)
+
+For example, if the current month is September 2026 and the requested flight date is December 10, 2026:
+
+MonthsToMove = ((2026 - 2026) * 12) + (12 - 9)
+
+MonthsToMove = 3
+
+JavaScript then uses this value to navigate the web calendar to the requested month.
+
+## JavaScript Calendar Navigation
+
+The automation uses JavaScript to locate the calendar's **Next Month** control by its ARIA label rather than relying on a dynamically generated element ID.
+
+```javascript
+function ExecuteScript() {
+    const monthsToMove = %MonthsToMove%;
+
+    for (let i = 0; i < monthsToMove; i++) {
+        const nextButton =
+            document.querySelector('[aria-label^="Next Month"]');
+
+        if (!nextButton) {
+            return "Next Month button not found";
+        }
+
+        nextButton.click();
+    }
+
+    return "Moved " + monthsToMove + " months";
+}
