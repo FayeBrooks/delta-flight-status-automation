@@ -77,3 +77,29 @@ function ExecuteScript() {
 
     return "Moved " + monthsToMove + " months";
 }
+```
+## Flow Screenshots
+
+### 1. Excel Input and Loop Setup
+
+The automation reads the flight routes and dates from Excel and processes each spreadsheet row using a `For each` loop.
+
+![Excel input and loop setup](Images/01-excel-input-loop.png)
+
+### 2. Dynamic Date Processing
+
+Power Automate Desktop extracts the requested day, month, and year and prepares the values used to calculate calendar navigation.
+
+![Dynamic date processing](Images/02-dynamic-date-logic.png)
+
+### 3. Calendar Navigation and Flight Data Extraction
+
+The flow calculates `MonthsToMove`, uses JavaScript to navigate the calendar, selects the requested date, submits the search, and extracts the flight information.
+
+![JavaScript and flight extraction](Images/03-javascript-flight-extraction.png)
+
+### 4. Excel Output and Loop Completion
+
+The retrieved flight number, departure time, arrival time, and status are written back to Excel before the automation advances to the next route.
+
+![Excel output and loop completion](Images/04-excel-output-loop.png)
