@@ -103,3 +103,29 @@ The flow calculates `MonthsToMove`, uses JavaScript to navigate the calendar, se
 The retrieved flight number, departure time, arrival time, and status are written back to Excel before the automation advances to the next route.
 
 ![Excel output and loop completion](Images/04-excel-output-loop.png)
+
+## Challenges and Solutions
+
+### Dynamic Calendar Selectors
+
+**Challenge:**  
+The flight-status calendar generated dynamic element IDs for its month-navigation controls. This made the original Power Automate Desktop UI selector unreliable across runs.
+
+**Solution:**  
+JavaScript was used to locate the **Next Month** control by its ARIA label instead of relying on the changing element ID. PAD calculates the required number of months in `MonthsToMove`, and JavaScript clicks the calendar control the appropriate number of times.
+
+### Dynamic Flight Dates
+
+**Challenge:**  
+The automation needed to work with different flight dates without manually changing the PAD flow.
+
+**Solution:**  
+The date is read directly from Excel. PAD separates the date into day, month, and year values, calculates the required calendar movement, and dynamically selects the requested day.
+
+### Multiple Flight Routes
+
+**Challenge:**  
+The automation needed to process multiple origin and destination combinations rather than a single hard-coded route.
+
+**Solution:**  
+A `For each` loop processes every row in the Excel input range. After retrieving the flight information, PAD writes the results to the corresponding Excel row and advances `ExcelRow` before processing the next route.
